@@ -18,7 +18,7 @@ public class SplashingView extends View {
     private Paint paint;
     private int currentStart=0;
 
-    private  boolean round=false;
+    private  boolean round=true;
 
     private  int degree=0;
 
@@ -91,13 +91,31 @@ public class SplashingView extends View {
 
         canvas.save();
 
+
         canvas.translate(cricleX, cricleY);
+
+
+        if (radius<=0)
+        {
+            canvas.drawCircle(0,0,30,paint);
+            canvas.restore();
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    if (onFinishListener!=null)
+                        onFinishListener.onFinish();
+                }
+            },300);
+            return;
+        }
+
         canvas.rotate(degree);
 
         for (int i=0;i<colors.length;i++)
         {
             currentStart++;
-            canvas.drawCircle(0, -radius, 20,paint);
+            canvas.drawCircle(0, -radius, 30,paint);
             canvas.rotate(360 / colors.length);
             paint.setColor(colors[currentStart%colors.length]);
 
@@ -128,6 +146,10 @@ public class SplashingView extends View {
     }
 
 
+    /**
+     * 这些变化率都可以利用加速器获取  这里 就不做了
+     */
+    private  boolean startFinish=true;
     public void finish()
     {
 
@@ -136,15 +158,24 @@ public class SplashingView extends View {
 
         round=false;
 
-        radius-=10;
 
-        if (radius==0)
-        {
 
-            if (onFinishListener!=null)
-                onFinishListener.onFinish();
-            return;
+
+        if (radius<310&startFinish) {
+            radius += 10;
         }
+
+        if (radius>300) {
+            startFinish = false;
+        }
+
+
+        if (!startFinish)
+        {
+            radius-=10;
+        }
+
+
 
         invalidate();
     }

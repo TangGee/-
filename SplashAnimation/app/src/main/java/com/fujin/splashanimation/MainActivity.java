@@ -31,22 +31,21 @@ public class MainActivity extends ActionBarActivity {
        round.setOnFinishListener(new SplashingView.OnFinishListener() {
            @Override
            public void onFinish() {
-               Intent intent=new Intent(MainActivity.this,SecondActivity.class);
-               startActivity(intent);
+//               Intent intent=new Intent(MainActivity.this,SecondActivity.class);
+//               startActivity(intent);
+               round.setVisibility(View.GONE);
+               end.setVisibility(View.GONE);
+
            }
        });
 
         end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isStart)
-                {
-                    round.startRount();
-                    isStart=true;
-                }else {
+
                     round.finish();
                 }
-            }
+
         });
     }
 
